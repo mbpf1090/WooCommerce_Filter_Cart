@@ -15,15 +15,13 @@ add_filter( 'woocommerce_cart_item_visible', 'mbpf_hide_category_from_cart', 10,
 
 function mbpf_hide_category_from_cart($visible, $cart_item, $cart_item_key) {
 	$product = apply_filters( 'woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
-	//Das funktioniert
-	echo get_product_category_name_by_id($product->category_ids[0]);
-	// $category ist null
-	$catergory = get_product_category_name_by_id($product->category_ids[0]);
-	echo var_dump($category);
-	// hier funktioniert es wieder
-	if ( strcmp("Zutat", get_product_category_name_by_id($product->category_ids[0])) == 0 ) {
+	$category_set = get_term_by( 'id', $product->category_ids[0], 'product_cat', 'ARRAY_A' );
+	$category = $category_set['name'];
+
+	if ( strcmp("Zutat", $category ) == 0 ) {
 		$visible = false;
 	}
+
 	return $visible;
 }
 
