@@ -12,10 +12,25 @@ if (!defined('ABSPATH')) {
 
 // Filter
 add_filter( 'woocommerce_cart_item_visible', 'mbpf_hide_category_from_cart', 10, 3 );
-
+add_filter( 'woocommerce_widget_cart_item_visible', 'mbpf_hide_category_from_cart', 10, 3 );
+add_filter( 'woocommerce_checkout_cart_item_visible', 'mbpf_hide_category_from_cart', 10, 3 );
+add_filter( 'woocommerce_order_item_visible', 'mbpf_hide_category_from_order', 10, 2 );
 
 function mbpf_hide_category_from_cart($visible, $cart_item, $cart_item_key) {
 	$product = apply_filters( 'woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
+	$category_set = get_term_by( 'id', $product->category_ids[0], 'product_cat', 'ARRAY_A' );
+	$category = $category_set['name'];
+	$categories = get_option('category_option');
+	foreach ($categories as $cat => $cat_value) {
+		if ( strcmp($cat, $category ) == 0 ) {
+			$visible = false;
+		}
+	}
+	return $visible;
+}
+
+function mbpf_hide_category_from_order($visible, $order_item) {
+	$product = $order_item->get_product();
 	$category_set = get_term_by( 'id', $product->category_ids[0], 'product_cat', 'ARRAY_A' );
 	$category = $category_set['name'];
 	$categories = get_option('category_option');
