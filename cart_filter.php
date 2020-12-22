@@ -4,6 +4,7 @@
  * Description:		Filter products by category from cart
  * Version:		0.1
  * Author:		MBPF
+ * Plugin URI:		https://github.com/mbpf1090/WooCommerce_Filter_Cart
 */
 
 if (!defined('ABSPATH')) {
